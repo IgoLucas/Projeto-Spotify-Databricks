@@ -1,4 +1,4 @@
-# 🎧 Análise de Popularidade de Músicas do Spotify (Pós-2015)
+# 🎧 Análise de Popularidade de Músicas do Spotify
 
 Este projeto utiliza o **Databricks** e **Spark SQL** para realizar uma pipeline de **ETL/ELT** e analisar dados do Spotify, com o objetivo de identificar as músicas e artistas que dominaram o cenário musical nos anos mais recentes (a partir de 2016).
 
@@ -27,4 +27,5 @@ FROM spotify_data_1_csv
 WHERE YEAR >= 2015
 GROUP BY name, artists
 ORDER BY Popularidade_total DESC
+
 
