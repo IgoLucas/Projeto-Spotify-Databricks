@@ -1,31 +1,52 @@
-# 🎧 Análise de Popularidade de Músicas do Spotify
+# 🎧 Análise de Popularidade de Músicas do Spotify (ETL/ELT no Databricks)
 
-Este projeto utiliza o **Databricks** e **Spark SQL** para realizar uma pipeline de **ETL/ELT** e analisar dados do Spotify, com o objetivo de identificar as músicas e artistas que dominaram o cenário musical nos anos mais recentes (a partir de 2016).
+Com o crescimento explosivo dos serviços de streaming, milhões de músicas são consumidas diariamente em plataformas digitais. Cada faixa carrega consigo informações valiosas: título, artista, data de lançamento, métricas de popularidade e até características musicais como energia, valência e duração. Esse tipo de dado é exatamente o que empresas como Spotify, Deezer e Apple Music utilizam para entender preferências do público e prever tendências.
 
-## 🚀 Tecnologias Utilizadas
+Pensando nisso, desenvolvi um projeto prático de **ETL e ELT no Databricks**, usando um dataset musical realista — semelhante a uma extração de catálogo do Spotify.
 
-* **Ambiente:** Databricks Community Edition
-* **Processamento:** Apache Spark
-* **Linguagem Principal:** PySpark / Spark SQL
+O dataset contém informações como:
+* Nome da música
+* Artistas
+* Data de lançamento
+* Popularidade
+* Características musicais (danceability, energy, acousticness etc.)
+* Duração da faixa
 
-## 📊 Fonte de Dados
+Esse foi o ponto de partida para a construção de um pipeline completo dentro do Lakehouse.
 
-O dataset utilizado é o `spotify_data_1.csv`, contendo diversas métricas sobre músicas (popularidade, danceability, tempo, etc.) ao longo dos anos.
+## 🛠️ Pipeline e Análises
 
-## 🛠️ Código e Análises Principais
+### ✅ Etapa ETL — Preparação e transformação inicial
 
-O código completo das etapas de carregamento e consulta está no arquivo **`Spotify data from PySpark.py`**. As três análises principais realizadas via Spark SQL foram:
+Primeiro, utilizei arquivos CSV armazenados no DBFS. Fiz a extração, limpeza e padronização de colunas, garantindo que:
+* datas fossem reconhecidas corretamente,
+* popularidade fosse tratada como campo numérico,
+* listas de artistas se tornassem estruturas consistentes,
+* valores ausentes fossem ajustados,
+* e tudo estivesse pronto para análise.
 
-### 1. As Músicas Mais Populares (Pós-2015)
+### ✅ Etapa ELT — Transformações analíticas via SQL
 
-Identificação das faixas com maior popularidade acumulada lançadas na última década.
+Com os dados já carregados no Lakehouse, apliquei transformações diretamente via SQL no Databricks, criando tabelas analíticas otimizadas.
+E então, defini três perguntas centrais que os dados transformados deveriam responder — perguntas muito comuns para empresas que analisam tendências musicais:
 
-**Query:**
-```sql
-SELECT name, artists, SUM(popularity) AS Popularidade_total
-FROM spotify_data_1_csv
-WHERE YEAR >= 2015
-GROUP BY name, artists
-ORDER BY Popularidade_total DESC
+**1. As músicas mais populares nos últimos 10 anos;**
+Aqui extraí as faixas lançadas na última década e ordenei pela métrica oficial de popularidade. O objetivo: identificar quem realmente dominou o mercado nesse período.
+
+**2. A quantidade de músicas lançadas por artista e ano de lançamento;**
+Essa análise permitiu visualizar a produtividade de cada artista ao longo dos anos. Detectamos padrões interessantes, como artistas que lançam consistentemente e outros com picos específicos de atividade.
+
+**3. Os artistas com a maior média de popularidade de músicas nos últimos 5 anos.**
+Nessa etapa foquei em consistência: não só quem lança músicas, mas quem lança músicas bem-sucedidas. Com isso, foi possível identificar artistas que mantêm alta popularidade no cenário recente.
+
+## ✨ Resultados e Insights
+
+* **Música Mais Popular (Pós-2015):** **"Toosie Slide"** do artista **Drake**, com uma Popularidade Total de **251**.
+* **Artistas de Destaque:** Drake e Dua Lipa se destacaram no topo da lista das faixas mais populares pós-2015.
+
+### ✅ Conclusão
+
+Esse projeto demonstra, de forma prática, como transformar dados musicais brutos em insights reais usando um pipeline de ETL + ELT no Databricks. Os dados do dataset se encaixam perfeitamente nessas análises e permitem construir visualizações e conclusões que agregam muito ao portfólio.
+
 
 
